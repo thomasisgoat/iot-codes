@@ -1,0 +1,40 @@
+#include <WiFi.h> 
+#include "ThingSpeak.h" 
+#include "DHT.h" 
+#define DHTPIN 5 // Digital pin connected to the DHT sensor 
+#define DHTTYPE DHT11 // DHT 11 
+const char * write_api = "2K81Q5827WE0KVNU";//Replace with Thingspeak write API 
+const char* ssid = "messi";//Replace with Network SSID 
+const char* password = "ronaldo7";//Replace with Network Password unsigned 
+long ch_no = 2706535;//Replace with Thingspeak Channel number 
+WiFiClient client; 
+DHT dht(DHTPIN, DHTTYPE); 
+void setup() 
+{ 
+Serial.begin(115200); 
+dht.begin(); 
+WiFi.begin(ssid, password); 
+while (WiFi.status() != WL_CONNECTED) 
+{ 
+delay(500); 
+Serial.print("."); 
+} 
+Serial.println("WiFi connected"); 
+Serial.println(WiFi.localIP()); 
+ThingSpeak.begin(client); 
+delay(1000); 
+} 
+void loop() 
+{ 
+float dd = dht.readHumidity(); 
+float ee = dht.readTemperature();   
+Serial.print("Humidity : "); 
+Serial.print(dd); 
+Serial.print(" | Temperature: "); 
+Serial.println(ee); 
+delay(1000); 
+ThingSpeak.setField(1,ee); 
+ThingSpeak.setField(2,dd);
+ThingSpeak.writeFields(ch_no, write_api); 
+delay(3000); 
+} 
