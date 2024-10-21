@@ -1,0 +1,27 @@
+#define BLYNK_TEMPLATE_ID "TMPL3HUo_Zwp_"
+#define BLYNK_TEMPLATE_NAME "Adarsh"
+#define BLYNK_AUTH_TOKEN "LTduloYA4k_ZaFuwoNliY2oXINu5jicG"
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#define BLYNK_PRINT Serial
+#include <BlynkSimpleEsp32.h>
+
+char auth[] = "LTduloYA4k_ZaFuwoNliY2oXINu5jicG";
+char ssid[] = "Neymar Jr";
+char pass[] = "football";
+
+BlynkTimer timer;
+
+void setup()
+{
+  // SerialUSB.begin(115200);
+  Serial.begin(115200);
+  Blynk.begin(auth, ssid, pass);
+  pinMode(2, OUTPUT);
+}
+void loop()
+{
+  Blynk.run();
+  timer.run();
+}
