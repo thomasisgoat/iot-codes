@@ -1,0 +1,65 @@
+#define BLYNK_TEMPLATE_ID "TMPL6QgDn6rPZ"
+#define BLYNK_TEMPLATE_NAME "exp3"
+#define BLYNK_AUTH_TOKEN "TwhKe5OQOTINSjANIpb6xSVez0HBqQuu"
+
+#include <WiFi.h>
+#include <WiFiClient.h>
+#include <BlynkSimpleEsp32.h>
+
+// WiFi credentials
+char ssid[] = "Vijay";
+char password[] = "vijay123";
+char auth[] = "VO6vjhMW5l4BQYfbYf76RJZGqOJt3UyS";
+
+// Pin for the LED
+#define LED_PIN 2
+
+void setup() 
+{
+  Serial.begin(115200);
+  // Connect to Wi-Fi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) 
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("Connected to ");
+  Serial.println(ssid);
+  // Initialize Blynk
+  Serial.println("Wait for Blynk Connect1");
+  Blynk.begin(auth, ssid, password);
+  Serial.println("Wait for Blynk Connect2");
+  while (Blynk.connect() == false) 
+  {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.println("Connected to Blynk server");
+  
+  // Set LED pin as output
+  pinMode(LED_PIN, OUTPUT);
+}
+
+void loop() 
+{
+  Blynk.run();
+}
+
+// Blynk virtual button handler
+BLYNK_WRITE(V5) 
+{
+  int buttonState = param.asInt();
+  if (buttonState == HIGH) 
+  {
+    // Turn on the LED
+    digitalWrite(LED_PIN, LOW);
+  } 
+  else 
+  {
+    // Turn off the LED
+    digitalWrite(LED_PIN, HIGH);
+  }
+}
